@@ -265,9 +265,11 @@ public class FilePickerDelegate implements PluginRegistry.ActivityResultListener
         this.loadDataToMemory = withData;
         this.allowedExtensions = allowedExtensions;
 
-        if (!this.permissionManager.isPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            this.permissionManager.askForPermission(Manifest.permission.READ_EXTERNAL_STORAGE, REQUEST_CODE);
-            return;
+        if (Build.VERSION.SDK_INT < 33) {
+            if (!this.permissionManager.isPermissionGranted(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                this.permissionManager.askForPermission(Manifest.permission.READ_EXTERNAL_STORAGE, REQUEST_CODE);
+                return;
+            }
         }
 
         this.startFileExplorer();
